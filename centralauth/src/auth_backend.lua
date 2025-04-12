@@ -1,4 +1,4 @@
--- centralauth/src/db_api.lua
+-- centralauth/centralauth/src/db_api.lua
 -- higher-level operation on the CentralAuth DB
 -- Copyright (C) 2024  1F616EMO
 -- SPDX-License-Identifier: GPL-3.0-or-later
@@ -31,9 +31,13 @@ function auth.get_auth(name)
         user_data.privileges = core.string_to_privs(core.settings:get("default_privs"))
         centralauth.create_local_user(global_user.id)
         centralauth.set_local_user_privilege(global_user.id, user_data.privileges)
+        centralauth.write_log("newusers", "autocreateaccount", global_user.id, global_user.id, "", nil)
+        centralauth.write_log("globalprivs", "autogrant", global_user.id, global_user.id, "", {
+            granted = user_data.privileges,
+            revoked = {},
+        })
     end
 
-    user_data.privileges = centralauth.get_local_user_privilege_by_id(global_user.id)
     if name == core.settings:get("name") then
         -- For the admin, give everything
         -- We don't have to care about singleplayer as that's banned
@@ -64,8 +68,15 @@ function auth.create_auth(name, password)
         end
     end
 
+    local privileges = core.string_to_privs(core.settings:get("default_privs"))
     centralauth.create_local_user(global_user.id, password)
-    centralauth.set_local_user_privilege(global_user.id, core.string_to_privs(core.settings:get("default_privs")))
+    centralauth.set_local_user_privilege(global_user.id, privileges)
+    centralauth.write_log("globalprivs", "autogrant", global_user.id, global_user.id, "", {
+        granted = privileges,
+        revoked = {},
+    })
+
+    centralauth.write_log("newusers", "createaccount", global_user.id, global_user.id, "", nil)
 end
 
 function auth.delete_auth(name)

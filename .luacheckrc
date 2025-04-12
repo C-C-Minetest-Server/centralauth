@@ -1,7 +1,3 @@
-globals = {
-    "centralauth",
-}
-
 read_globals = {
     "DIR_DELIM", "INIT",
 
@@ -48,4 +44,19 @@ read_globals = {
             "factorial"
         }
     },
+}
+
+files["centralauth"] ={
+    globals = {
+        "centralauth",
+    },
+}
+
+filles["antispoof"] = {
+    globals = {
+        "antispoof",
+    },
+    read_globals = {
+        "centralauth",
+    }
 }

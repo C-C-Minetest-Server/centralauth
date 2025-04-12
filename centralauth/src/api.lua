@@ -1,4 +1,4 @@
--- centralauth/src/api.lua
+-- centralauth/centralauth/src/api.lua
 -- Suppliment operation on the CentralAuth DB
 -- Copyright (C) 2024  1F616EMO
 -- SPDX-License-Identifier: GPL-3.0-or-later
@@ -62,9 +62,12 @@ centralauth.register_global_privilege("staff", {
     root_access = true,
 })
 
-centralauth.register_global_privilege("steward", {
-    description = S("Cross-server moderators"),
-    granted_by = { staff = true },
-    revoked_by = { staff = true },
+centralauth.register_global_privilege("globallock", {
+    description = S("Apply global locks on accounts"),
+    self_revokable = true,
+})
+
+centralauth.register_global_privilege("antispoof_init", {
+    description = S("Can run /centralauth-antispoof-init"),
     self_revokable = true,
 })

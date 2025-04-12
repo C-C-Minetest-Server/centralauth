@@ -1,0 +1,56 @@
+# textdomain: centralauth
+
+##[ .cdb_translation.lua ]##
+CentralAuth=
+Player account unification across Luanti servers=
+
+##[ src/api.lua ]##
+Operators of the server=
+Apply global locks on accounts=
+Can run /centralauth-antispoof-init=
+
+##[ src/chatcommands.lua ]##
+Get global user information of a player or yourself=
+[<name>|#<id>]=
+Global user not found for @1=
+Global user information of @1:=
+User ID: @1=
+Registered: @1=
+no record=
+Home server: @1=
+Last login (globally): @1 (on @2)=
+Locked: Yes (by @1)=
+Locked on: @1=
+Lock reason: @1=
+Locked: No=
+Local accounts:=
+Server @1:=
+Last login: @1=
+Privileges: @1=
+Global privileges: @1=
+You cannot grant @1 to other players. Players with any of the following privileges can grant it: @2=
+You cannot grant @1 to other players. Only the staffs can grant this privilege.=
+Granted @1 to @2=
+Grant global privileges to a player=
+<name> (<privilege> [, <privilege2> [<...>]])=
+Invalid parameters (see /help grant).=
+Grant global privileges to yoursellf=
+<privilege> [, <privilege2> [<...>]]=
+You cannot revoke @1 from other players. Players with any of the following privileges can revoke it: @2=
+You cannot revoke @1 from other players. Only the staffs can revoke this privilege.=
+Revoked @1 from @2=
+Revoke global privileges from a player=
+Invalid parameters (see /help revoke).=
+Revoke global privileges from yourself=
+Globally lock or unlock an account=
+(lock|unlock) <username> [<reason>]=
+You do not have permission to use this command.=
+User @1 is already locked.=
+User @1 has been locked.=
+User @1 is not locked.=
+User @1 has been unlocked.=
+Regenerate AntiSpoof data=
+Regenerating AntiSpoof data, expect lag..=
+AntiSpoof data regenerated.=
+View CentralAuth logs=
+No logs found.=

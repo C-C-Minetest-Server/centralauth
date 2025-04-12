@@ -1,4 +1,4 @@
--- centralauth/init.lua
+-- centralauth/centralauth/init.lua
 -- Player account unification across Luanti servers
 -- Copyright (C) 2025  1F616EMO
 -- SPDX-License-Identifier: GPL-2.0-or-later
@@ -16,15 +16,29 @@ local settings = {}
 settings.pg_connection = core.settings:get("centralauth_pg_connection")
 settings.server_db_id = core.settings:get("centralauth_server_db_id")
 settings.global_lock_message = core.settings:get("centralauth_global_lock_message")
-	or "This account is globalllly locked by %s on %s. You will not be able to log in to any Luanti servers in " ..
+	or "This account is globally locked by %s on %s. You will not be able to log in to any Luanti servers in " ..
 		"this CentralAuth system. Please contact the server administrators if you have any questions. " ..
 		"The reason given is: %s"
+settings.server_list = core.settings:get("centralauth_server_list")
 
 if not settings.pg_connection then
     centralauth.internal.logger:raise("Missing setting `centralauth_pg_connection`.")
 elseif not settings.server_db_id then
     centralauth.internal.logger:raise("Missing setting `centralauth_server_db_id`.")
 end
+
+if not settings.server_list then
+	centralauth.internal.logger:warning("Missing setting `centralauth_server_list`. " ..
+		"/centralauth and other operations with not show cross-server data.")
+	settings.server_list = settings.server_db_id
+end
+
+settings.server_list = string.split(settings.server_list)
+for i, v in ipairs(settings.server_list) do
+	settings.server_list[i] = string.trim(v)
+end
+
+-- Set up insecure environment
 
 local insecure = core.request_insecure_environment()
 if not insecure then
@@ -88,6 +102,7 @@ centralauth.internal.pgmoon = centralauth.internal.func_with_IE_env(insecure.req
 
 local MP = core.get_modpath("centralauth")
 for _, name in ipairs({
+	"antispoof",
 	"db",
     "db_api",
     "auth_backend",

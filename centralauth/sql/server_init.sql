@@ -1,4 +1,4 @@
--- centralauth/sql/server_init.sql
+-- centralauth/centralauth/sql/server_init.sql
 -- Per-server initilization SQL for CentralAuth
 -- Copyright (C) 2025  1F616EMO
 -- SPDX-License-Identifier: GPL-2.0-or-later

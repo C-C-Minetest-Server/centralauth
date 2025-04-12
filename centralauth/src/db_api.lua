@@ -1,4 +1,4 @@
--- centralauth/src/db_api.lua
+-- centralauth/centralauth/src/db_api.lua
 -- higher-level operation on the CentralAuth DB
 -- Copyright (C) 2024  1F616EMO
 -- SPDX-License-Identifier: GPL-3.0-or-later
@@ -108,6 +108,21 @@ centralauth.set_global_user_privilege = function(id, privileges)
     )
 end
 
+centralauth.get_user_names_by_normalized_name = function(name)
+    assert(type(name) == "string")
+
+    local res = _db.get_user_names_by_normalized_name(name)
+    if not res then
+        logger:raise("Failed to get users by normalized name")
+    end
+
+    local rtn = {}
+    for _, row in ipairs(res) do
+        table.insert(rtn, row.gu_name)
+    end
+    return rtn
+end
+
 centralauth.create_global_user = function(name, password, home_server)
     if not home_server then
         home_server = SERVER_ID
@@ -119,6 +134,40 @@ centralauth.create_global_user = function(name, password, home_server)
     end
 
     return res[1].gu_id
+end
+
+centralauth.regenerate_antispoof_data = function()
+    _int.postgres:settimeout()
+    local res = _int.query("BEGIN;")
+    if not res then
+        _int.postgres:settimeout(2000)
+        logger:raise("Failed to begin transaction")
+    end
+
+    local usernames_res = _db.get_all_global_user_names()
+    if not usernames_res then
+        _int.query("ROLLBACK;")
+        _int.postgres:settimeout(2000)
+        logger:raise("Failed to get all global user names")
+    end
+
+    for _, row in ipairs(usernames_res) do
+        res = _db.write_antispoof_data(row.gu_name)
+        if not res then
+            _int.query("ROLLBACK;")
+            _int.postgres:settimeout(2000)
+            logger:raise("Failed to write antispoof data")
+        end
+    end
+
+    res = _int.query("COMMIT;")
+    if not res then
+        _int.query("ROLLBACK;")
+        _int.postgres:settimeout(2000)
+        logger:raise("Failed to commit transaction")
+    end
+
+    _int.postgres:settimeout(2000)
 end
 
 centralauth.update_password = function(id, password)
@@ -141,6 +190,26 @@ centralauth.delete_auth_by_name = function(name)
     local res = _db.remove_auth_data_by_name(name)
     if not res then
         logger:raise("Failed to delete auth data")
+    end
+end
+
+centralauth.lock_user = function(id, actor, reason)
+    assert(type(id) == "number")
+    assert(type(actor) == "number")
+    assert(type(reason) == "string")
+
+    local res = _db.lock_user(id, actor, reason)
+    if not res then
+        logger:raise("Failed to lock user")
+    end
+end
+
+centralauth.unlock_user = function(id)
+    assert(type(id) == "number")
+
+    local res = _db.unlock_user(id)
+    if not res then
+        logger:raise("Failed to unlock user")
     end
 end
 
@@ -260,4 +329,36 @@ centralauth.create_local_user = function(id, password)
 end
 centralauth.write_auth = function(name, auth_data)
     return centralauth.write_auth_on(SERVER_ID, name, auth_data)
+end
+
+-- Logs
+
+centralauth.write_log_on = function(log_type, action, server, actor, target, description, data)
+    assert(type(log_type) == "string")
+    assert(type(server) == "string")
+    assert(type(action) == "string")
+    assert(type(actor) == "number")
+    assert(type(target) == "number")
+    assert(type(description) == "string")
+
+    local res = _db.write_log(log_type, action, server, actor, target, description, data)
+    if not res or #res == 0 then
+        return nil
+    end
+    return res[1].log_id
+end
+
+centralauth.write_log = function(log_type, action, actor, target, description, data)
+    return centralauth.write_log_on(log_type, action, SERVER_ID, actor, target, description, data)
+end
+
+centralauth.get_logs = function(constraints)
+    assert(type(constraints) == "table")
+
+    local res = _db.get_logs(constraints)
+    if not res then
+        return {}
+    end
+
+    return res
 end

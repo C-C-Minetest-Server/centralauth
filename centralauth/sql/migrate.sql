@@ -1,4 +1,4 @@
--- centralauth/sql/migrate.sql
+-- centralauth/centralauth/sql/migrate.sql
 -- Migrate an existing PostgreSQL-backed Luanti server to CentralAuth
 -- Copyright (C) 2025  1F616EMO
 -- SPDX-License-Identifier: GPL-2.0-or-later
@@ -47,8 +47,8 @@ CREATE TABLE user_privileges (
 */
 
 -- Create a global user for each user in auth.
-INSERT INTO global_user (gu_name, gu_password, gu_last_login, gu_home_server)
-SELECT name, password, last_login, '/* SERVERNAME */'
+INSERT INTO global_user (gu_name, gu_password, gu_last_login, gu_last_login_on, gu_home_server)
+SELECT name, password, last_login, '/* SERVERNAME */', '/* SERVERNAME */'
 FROM auth;
 
 -- Create a local user for each user in auth.
