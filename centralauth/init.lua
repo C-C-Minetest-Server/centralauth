@@ -20,6 +20,10 @@ settings.global_lock_message = core.settings:get("centralauth_global_lock_messag
 		"this CentralAuth system. Please contact the server administrators if you have any questions. " ..
 		"The reason given is: %s"
 settings.server_list = core.settings:get("centralauth_server_list")
+settings.block_new_accounts = core.settings:get_bool("centralauth_block_new_accounts", false)
+settings.block_new_accounts_reason = core.settings:get("centralauth_block_new_accounts_reason")
+	or "This server does not allow creation of new global account. Please create an account on another Luanti server " ..
+		"on this CentralAuth system."
 
 if not settings.pg_connection then
     centralauth.internal.logger:raise("Missing setting `centralauth_pg_connection`.")
