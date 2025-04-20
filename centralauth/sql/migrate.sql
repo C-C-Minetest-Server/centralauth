@@ -54,11 +54,11 @@ FROM auth;
 -- Create a local user for each user in auth.
 INSERT INTO /* SERVERNAME */_local_user (lu_id, lu_last_login)
 SELECT gu.gu_id, last_login
-FROM auth
-WHERE global_user.gu_id = auth.id AND global_user.gu_name = auth.name;
+FROM auth, global_user gu
+WHERE gu.gu_name = auth.name;
 
 -- Move local user privileges
 INSERT INTO /* SERVERNAME */_local_user_privilege (lp_id, lp_privilege)
-SELECT privilege
-FROM user_privileges
-WHERE user_privileges.id = auth.id AND global_user.gu_id = auth.id AND global_user.gu_name = auth.name;
+SELECT gu.gu_id, privilege
+FROM user_privileges, global_user gu, auth
+WHERE user_privileges.id = auth.id AND gu.gu_name = auth.name;
