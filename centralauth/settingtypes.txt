@@ -1,0 +1,24 @@
+#    Parameters passed to pgmoon for the database connection.
+centralauth_pg_connection (PostgreSQL connection parameters) string
+
+#    Server database ID of this server.
+#    Must be unique among the same CentralAuth system.
+centralauth_server_db_id (Server database ID) string
+
+#    Comma-seperated list of known servers in the sam CentralAuth system.
+centralauth_server_list (Known server list) string
+
+#    The reason given to players when attempting to log into 
+#    a globally locked account. 
+#    The first formatting parameter is the staff who did the lock, the
+#    second is the time the user was blocked, and the third is the
+#    provided reason.
+centralauth_global_lock_message (Message given to globally locked players) string This account is globally locked by %s on %s. You will not be able to log in to any Luanti servers in this CentralAuth system. Please contact the server administrators if you have any questions. The reason given is: %s
+
+#    Whether to block new global account creation on that server.
+#    Used on non-main servers like sandboxes.
+centralauth_block_new_accounts (Block new global account creation) bool false
+
+#    The reason given to players if they are blocked by 
+#    centralauth_block_new_accounts.
+centralauth_block_new_accounts_reason (Message given to blocked global account creation attempts) string This server does not allow creation of new global account. Please create an account on another Luanti server on this CentralAuth system.
