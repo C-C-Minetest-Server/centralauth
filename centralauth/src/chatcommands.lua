@@ -33,12 +33,11 @@ core.register_chatcommand("centralauth", {
 
         msg[#msg + 1] = S("Global user information of @1:", global_user.name)
         msg[#msg + 1] = TAB .. S("User ID: @1", global_user.id)
-        msg[#msg + 1] = TAB .. S("Registered: @1",
-            global_user.registered and os.date("%Y-%m-%d %H:%M:%S", global_user.registered) or S("no record"))
+        msg[#msg + 1] = TAB .. S("Registered: @1", centralauth.stringify_last_login(global_user.created_at))
         msg[#msg + 1] = TAB .. S("Home server: @1", global_user.home_server)
         msg[#msg + 1] = TAB .. S("Last login (globally): @1 (on @2)",
-            global_user.last_login and os.date("%Y-%m-%d %H:%M:%S", global_user.last_login) or S("no record"),
-            global_user.last_login_on or S("no record"))
+            centralauth.stringify_last_login(global_user.last_login),
+            global_user.last_login_on or S("unknown"))
 
         if global_user.locked then
             local locked_by_global_user = centralauth.get_global_user_by_id(global_user.locked_by)
@@ -56,8 +55,8 @@ core.register_chatcommand("centralauth", {
             if local_user then
                 local local_privs = centralauth.get_local_user_privilege_on_server_by_id(server_id, local_user.id)
                 msg[#msg + 1] = TABTAB .. S("Server @1:", server_id)
-                msg[#msg + 1] = TABTABTAB .. S("Last login: @1",
-                    local_user.last_login and os.date("%Y-%m-%d %H:%M:%S", local_user.last_login) or S("no record"))
+                msg[#msg + 1] = TABTABTAB .. S("Registered: @1", centralauth.stringify_last_login(local_user.created_at))
+                msg[#msg + 1] = TABTABTAB .. S("Last login: @1", centralauth.stringify_last_login(local_user.last_login))
                 local local_privs_list = {}
                 for privilege in pairs(local_privs) do
                     local_privs_list[#local_privs_list + 1] = privilege

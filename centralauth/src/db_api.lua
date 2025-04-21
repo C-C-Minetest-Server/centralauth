@@ -79,7 +79,7 @@ local function global_user_data_handler(func)
             locked_by = data.gu_locked_by,
             locked_reason = data.gu_locked_reason,
             hidden_level = data.gu_hidden_level,
-            created_on = data.gu_created_on,
+            created_at = data.gu_created_at,
             last_login = data.gu_last_login,
             last_login_on = data.gu_last_login_on,
             password_reset_key = data.gu_password_reset_key,

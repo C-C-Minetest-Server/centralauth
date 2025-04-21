@@ -106,6 +106,7 @@ centralauth.internal.pgmoon = centralauth.internal.func_with_IE_env(insecure.req
 
 local MP = core.get_modpath("centralauth")
 for _, name in ipairs({
+	"util",
 	"antispoof",
 	"db",
     "db_api",
