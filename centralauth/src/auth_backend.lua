@@ -21,6 +21,8 @@ function auth.get_auth(name)
         password = global_user.password,
     }
 
+    local privs_changed = false
+
     -- If no local user, create immediately
     local local_user = centralauth.get_local_user_by_id(global_user.id)
     if local_user then
@@ -30,13 +32,15 @@ function auth.get_auth(name)
         user_data.last_login = -1
         user_data.privileges = core.string_to_privs(core.settings:get("default_privs"))
         centralauth.create_local_user(global_user.id)
-        centralauth.set_local_user_privilege(global_user.id, user_data.privileges)
+        privs_changed = true
         centralauth.write_log("newusers", "autocreateaccount", global_user.id, global_user.id, "", nil)
         centralauth.write_log("globalprivs", "autogrant", global_user.id, global_user.id, "", {
-            granted = user_data.privileges,
+            granted = table.copy(user_data.privileges),
             revoked = {},
         })
     end
+
+    local old_privileges = table.copy(user_data.privileges)
 
     if name == core.settings:get("name") then
         -- For the admin, give everything
@@ -46,6 +50,34 @@ function auth.get_auth(name)
                 user_data.privileges[priv] = true
             end
         end
+    end
+
+    local global_privs = centralauth.get_global_user_privilege_by_id(global_user.id)
+    for priv in pairs(global_privs) do
+        if centralauth.registered_global_privileges[priv]
+            and centralauth.registered_global_privileges[priv].root_access then
+            user_data.privileges.privs = true
+            break
+        end
+    end
+
+    local granted_privs = {}
+    for priv, value in pairs(user_data.privileges) do
+        if value and not old_privileges[priv] then
+            granted_privs[priv] = true
+        end
+    end
+
+    if next(granted_privs) then
+        centralauth.write_log("globalprivs", "autogrant", global_user.id, global_user.id, "", {
+            granted = granted_privs,
+            revoked = {},
+        })
+        privs_changed = true
+    end
+
+    if privs_changed then
+        centralauth.set_local_user_privilege(global_user.id, user_data.privileges)
     end
 
     return user_data
