@@ -16,9 +16,9 @@ Global user not found for @1=
 Global user information of @1:=
 User ID: @1=
 Registered: @1=
-no record=
 Home server: @1=
 Last login (globally): @1 (on @2)=
+unknown=
 Locked: Yes (by @1)=
 Locked on: @1=
 Lock reason: @1=
@@ -54,3 +54,7 @@ Regenerating AntiSpoof data, expect lag..=
 AntiSpoof data regenerated.=
 View CentralAuth logs=
 No logs found.=
+
+##[ src/util.lua ]##
+no record=
+never=
