@@ -6,8 +6,8 @@
 core.register_on_prejoinplayer(function(name)
     local global_player = centralauth.get_global_user_by_name(name)
     if not global_player then
-        if settings.block_new_accounts then
-            return settings.block_new_accounts_reason
+        if centralauth.settings.block_new_accounts then
+            return centralauth.settings.block_new_accounts_reason
         end
 
         local normalized = centralauth.antispoof.normalize(name)
