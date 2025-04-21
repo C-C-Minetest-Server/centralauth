@@ -28,7 +28,7 @@ CREATE TABLE survival_local_user_privilege (
 
 ## Step 3a. Migrate existing users
 
-If you want to add an existing server (which has existing users) to this newly created CentralAuth system, follow the instructions in [`MIGRATE.md`](https://github.com/C-C-Minetest-Server/centralauth/blob/main/docs/MIGRATE.md). Check that documentation file for the steps and limitations.
+If you want to add an existing server (which has existing users) to this newly created CentralAuth system, follow the instructions in [`MIGRATE.md`](https://github.com/C-C-Minetest-Server/centralauth/blob/main/.docs/MIGRATE.md). Check that documentation file for the steps and limitations.
 
 ## Step 3b. Grant yourself staff privilege globally
 

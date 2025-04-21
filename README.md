@@ -9,7 +9,7 @@ CentralAuth syncs usernames and password acorss Luanti servers. The following mo
 
 Documentations:
 
-* [`INSTALL.md`](https://github.com/C-C-Minetest-Server/centralauth/blob/main/docs/INSTALL.md): How to initialize the CentralAuth database and add servers to the CentralAuth system.
-* [`MIGRATE.md`](https://github.com/C-C-Minetest-Server/centralauth/blob/main/docs/MIGRATE.md): How to import users from an existing server.
-* [`COMMAND.md`](https://github.com/C-C-Minetest-Server/centralauth/blob/main/docs/COMMAND.md): In-game commands.
-* [`API.md`](https://github.com/C-C-Minetest-Server/centralauth/blob/main/docs/API.md): Public APIs that can be used by other mods.
+* [`INSTALL.md`](https://github.com/C-C-Minetest-Server/centralauth/blob/main/.docs/INSTALL.md): How to initialize the CentralAuth database and add servers to the CentralAuth system.
+* [`MIGRATE.md`](https://github.com/C-C-Minetest-Server/centralauth/blob/main/.docs/MIGRATE.md): How to import users from an existing server.
+* [`COMMAND.md`](https://github.com/C-C-Minetest-Server/centralauth/blob/main/.docs/COMMAND.md): In-game commands.
+* [`API.md`](https://github.com/C-C-Minetest-Server/centralauth/blob/main/.docs/API.md): Public APIs that can be used by other mods.

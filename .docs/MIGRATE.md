@@ -17,7 +17,7 @@ It is possible to migrate authentication data from one server onto the CentralAu
 
 ## Step 1. Initialize the database
 
-Follow step 1-2 on [`INSTALL.md`](https://github.com/C-C-Minetest-Server/centralauth/blob/main/docs/INSTALL.md) to create the global tables and local tables for the server to be migrated.
+Follow step 1-2 on [`INSTALL.md`](https://github.com/C-C-Minetest-Server/centralauth/blob/main/.docs/INSTALL.md) to create the global tables and local tables for the server to be migrated.
 
 ## Step 2. Run the migration script
 
@@ -46,4 +46,4 @@ WHERE user_privileges.id = auth.id AND gu.gu_name = auth.name;
 
 ## Step 3. Finish setting up the server
 
-Follow step 4 and onwards on [`INSTALL.md`](https://github.com/C-C-Minetest-Server/centralauth/blob/main/docs/INSTALL.md) to finish setup on the migrated server.
+Follow step 4 and onwards on [`INSTALL.md`](https://github.com/C-C-Minetest-Server/centralauth/blob/main/.docs/INSTALL.md) to finish setup on the migrated server.
