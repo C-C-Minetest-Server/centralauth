@@ -173,7 +173,7 @@ function auth.set_privileges(name, privileges)
 end
 
 function auth.reload()
-    -- Hmm, no-op.
+    centralauth.invalidate_all_cache()
     return true
 end
 

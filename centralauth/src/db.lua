@@ -165,17 +165,18 @@ end
 
 function _db.get_local_user_on_server_by_id(server_id, id)
     return _int.query(f(
-        "SELECT * FROM %s_local_user " ..
-        "WHERE lu_id = %d",
+        "SELECT lu.*, gu.gu_name FROM %s_local_user lu " ..
+        "JOIN global_user gu ON lu.lu_id = gu.gu_id " ..
+        "WHERE lu.lu_id = %d",
         server_id, id
     ))
 end
 
 function _db.get_local_user_on_server_by_name(server_id, name)
     return _int.query(f(
-        "SELECT lu.* FROM %s_local_user lu " ..
+        "SELECT lu.*, gu.name FROM %s_local_user lu " ..
         "JOIN global_user gu ON lu.lu_id = gu.id " ..
-        "WHERE gu.name = %s",
+        "WHERE gu.gu_name = %s",
         server_id, e(name)
     ))
 end
